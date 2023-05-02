@@ -5,7 +5,7 @@
 [![Travis Build](https://travis-ci.com/testmonitor/laravel-vue-i18n-generator.svg?branch=master)](https://travis-ci.com/testmonitor/laravel-vue-i18n-generator)
 [![Code Coverage](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/?branch=master)
 [![Code Quality](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/?branch=master)
-[![StyleCI](https://styleci.io/repos/223973950/shield)](https://styleci.io/repos/223973950)
+[![StyleCI](https://styleci.io/repos/634942834/shield)](https://styleci.io/repos/634942834)
 [![License](https://poser.pugx.org/testmonitor/laravel-vue-i18n-generator/license)](https://packagist.org/packages/testmonitor/laravel-vue-i18n-generator)
 
 This package compiles your Laravel translation files into a [Vue i18n](https://kazupon.github.io/vue-i18n/) compatible JSON file.
