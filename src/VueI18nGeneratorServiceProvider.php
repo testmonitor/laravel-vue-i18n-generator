@@ -14,7 +14,7 @@ class VueI18nGeneratorServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('vue-i18n-generator.php'),
+                __DIR__ . '/../config/config.php' => config_path('vue-i18n-generator.php'),
             ], 'config');
 
             // Registering package command
@@ -29,6 +29,6 @@ class VueI18nGeneratorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'vue-i18n-generator');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'vue-i18n-generator');
     }
 }

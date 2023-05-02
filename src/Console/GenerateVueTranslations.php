@@ -180,7 +180,7 @@ class GenerateVueTranslations extends Command
     protected function removeEscapeCharacter(string $line): string
     {
         return preg_replace_callback(
-            "/" . preg_quote('!', '/') . "(:\w+)/",
+            '/' . preg_quote('!', '/') . "(:\w+)/",
             fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
             $line
         );
@@ -196,7 +196,7 @@ class GenerateVueTranslations extends Command
     protected function transformCollonsToBraces(string $line): string
     {
         return preg_replace_callback(
-            "/(?<!mailto|tel|" . preg_quote('!', '/') . "):\w+/",
+            '/(?<!mailto|tel|' . preg_quote('!', '/') . "):\w+/",
             fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
             $line
         );
