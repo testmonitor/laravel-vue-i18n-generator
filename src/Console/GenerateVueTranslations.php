@@ -14,8 +14,8 @@ class GenerateVueTranslations extends Command
      * @var string
      */
     protected $signature = 'vue:translations
-                            {--path= : Laravel language source path}
-                            {--output= : Vue-i18n output file}';
+                            {--path : Laravel language source path (defaults to Laravel language path)}
+                            {--output : Vue-i18n output file}';
 
     /**
      * The console command description.
@@ -46,14 +46,19 @@ class GenerateVueTranslations extends Command
     public function handle()
     {
         // Determine input and output paths.
-        $this->languagePath = base_path($this->option('path') ?? config('vue-i18n-generator.languagePath'));
-        $this->outputFile = base_path($this->option('output') ?? config('vue-i18n-generator.outputFile'));
+        $this->languagePath = $this->option('path') ?
+            base_path($this->option('path')) :
+            lang_path();
 
         if (! is_dir($this->languagePath)) {
             $this->error("\"{$this->languagePath}\" does not exists.");
 
             return 1;
         }
+
+        $this->outputFile = $this->option('output') ?
+            base_path($this->option('output')) :
+            config('vue-i18n-generator.outputFile');
 
         // Parse Laravel translations.
         $translations = $this->getTranslations([$this->languagePath]);
