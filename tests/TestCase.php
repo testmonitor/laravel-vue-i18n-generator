@@ -2,7 +2,6 @@
 
 namespace TestMonitor\VueI18nGenerator\Tests;
 
-use Exception;
 use Illuminate\Contracts\Config\Repository;
 use TestMonitor\VueI18nGenerator\VueI18nGeneratorServiceProvider;
 
@@ -32,7 +31,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            VueI18nGeneratorServiceProvider::class
+            VueI18nGeneratorServiceProvider::class,
         ];
     }
 }
