@@ -49,7 +49,7 @@ class GenerateVueTranslations extends Command
         $this->languagePath = base_path($this->option('path') ?? config('vue-i18n-generator.languagePath'));
         $this->outputFile = base_path($this->option('output') ?? config('vue-i18n-generator.outputFile'));
 
-        if (!is_dir($this->languagePath)) {
+        if (! is_dir($this->languagePath)) {
             $this->error("\"{$this->languagePath}\" does not exists.");
 
             return 1;
