@@ -22,7 +22,7 @@ class GenerateVueTranslations extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a Vue-i18n JSON translation file based on Laravel JSON translation files';
+    protected $description = 'Generate a Vue-i18n JS translation file based on Laravel JSON / PHP translation files';
 
     /**
      * Laravel source language path.
