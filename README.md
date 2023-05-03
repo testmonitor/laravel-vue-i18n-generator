@@ -18,7 +18,7 @@ This package compiles your Laravel translation files into a [Vue i18n](https://k
 
 ## Installation
 
-Start by installing the package using composer:
+Start by installing the package using Composer:
 
 	$ composer require testmonitor/laravel-vue-i18n-generator
 
@@ -30,7 +30,7 @@ You're all set up now!
 
 ## Usage
 
-When installed, use the Artisan command to generate a Vue i18n file:
+When installed, use the Artisan command to generate the Vue i18n file:
 
     $ php artisan vue:translations
 
@@ -38,11 +38,11 @@ This compiles your Laravel JSON and PHP language files into a single Javascript 
 called `vue-i18n-locales.js` located in `/resources/js/i18n`.
 
 By default, your Laravel language path is used to determine which files to include.
-You can override this behaviour using the path option:
+You can override this behavior using the path option:
 
     $ php artisan vue:translations --path=resources/lang
 
-You can change the output file path by specifying the output option:
+There is also an option to change the output file path:
 
     $ php artisan vue:translations --output=resources/js/i18n.js
 
