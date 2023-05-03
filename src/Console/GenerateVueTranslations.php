@@ -45,8 +45,15 @@ class GenerateVueTranslations extends Command
      */
     public function handle()
     {
-        $this->languagePath = $this->option('path') ?? config_path('vue-i18n-generator.languagePath');
-        $this->outputFile = $this->option('output') ?? config_path('vue-i18n-generator.outputFile');
+        // Determine input and output paths.
+        $this->languagePath = base_path($this->option('path') ?? config('vue-i18n-generator.languagePath'));
+        $this->outputFile = base_path($this->option('output') ?? config('vue-i18n-generator.outputFile'));
+
+        if (!is_dir($this->languagePath)) {
+            $this->error("\"{$this->languagePath}\" does not exists.");
+
+            return 1;
+        }
 
         // Parse Laravel translations.
         $translations = $this->getTranslations([$this->languagePath]);
@@ -226,7 +233,7 @@ class GenerateVueTranslations extends Command
      *
      * @return int|false
      */
-    protected function generateVue18nFile(string $filename, array $translations)
+    protected function generateVue18nFile(string $filename, array $translations): int|false
     {
         return file_put_contents(
             $filename,
@@ -241,7 +248,7 @@ class GenerateVueTranslations extends Command
      *
      * @return string
      */
-    protected function convertTranslationsToVue18n(array $translations)
+    protected function convertTranslationsToVue18n(array $translations): string
     {
         $json = json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
