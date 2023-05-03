@@ -5,13 +5,12 @@
 [![StyleCI](https://styleci.io/repos/634942834/shield)](https://styleci.io/repos/634942834)
 [![License](https://poser.pugx.org/testmonitor/laravel-vue-i18n-generator/license)](https://packagist.org/packages/testmonitor/laravel-vue-i18n-generator)
 
-This package compiles your Laravel translation files into a [Vue i18n](https://kazupon.github.io/vue-i18n/) compatible JSON file.
+This package compiles your Laravel translation files into a [Vue i18n](https://kazupon.github.io/vue-i18n/) compatible Javascript file.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Examples](#examples)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [Credits](#credits)
@@ -38,7 +37,11 @@ When installed, use the Artisan command to generate a Vue i18n file:
 By default, this combine your json and PHP language files into a single Javascript file called `vue-i18n-locales.js`
 located in `/resources/js/i18n`.
 
-You can configure the language path and output file in the configuration file.
+You can change the output file path by specifying the output option:
+
+    $ php artisan vue:translations --output=resources/js/i18n.js
+
+Alternatively, you can configure output file path in the configuration file.
 
 ## Changelog
 

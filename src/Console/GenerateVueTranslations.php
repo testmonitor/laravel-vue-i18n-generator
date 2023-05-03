@@ -14,8 +14,8 @@ class GenerateVueTranslations extends Command
      * @var string
      */
     protected $signature = 'vue:translations
-                            {--path : Laravel language source path (defaults to Laravel language path)}
-                            {--output : Vue-i18n output file}';
+                            {--path= : Laravel language source path (defaults to Laravel language path)}
+                            {--output= : Vue-i18n output file}';
 
     /**
      * The console command description.
