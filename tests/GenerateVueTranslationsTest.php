@@ -22,9 +22,9 @@ class GenerateVueTranslationsTest extends TestCase
 
     private function cleanUp()
     {
-       if (is_file(__DIR__ . '/data/output.js')) {
+        if (is_file(__DIR__ . '/data/output.js')) {
             unlink(__DIR__ . '/data/output.js');
-       }
+        }
     }
 
     /** @test */
