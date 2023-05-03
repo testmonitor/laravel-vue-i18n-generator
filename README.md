@@ -2,9 +2,6 @@
 
 [![Latest Stable Version](https://poser.pugx.org/testmonitor/laravel-vue-i18n-generator/v/stable)](https://packagist.org/packages/testmonitor/laravel-vue-i18n-generator)
 [![CircleCI](https://img.shields.io/circleci/project/github/testmonitor/laravel-vue-i18n-generator.svg)](https://circleci.com/gh/testmonitor/laravel-vue-i18n-generator)
-[![Travis Build](https://travis-ci.com/testmonitor/laravel-vue-i18n-generator.svg?branch=master)](https://travis-ci.com/testmonitor/laravel-vue-i18n-generator)
-[![Code Coverage](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/?branch=master)
-[![Code Quality](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/testmonitor/laravel-vue-i18n-generator/?branch=master)
 [![StyleCI](https://styleci.io/repos/634942834/shield)](https://styleci.io/repos/634942834)
 [![License](https://poser.pugx.org/testmonitor/laravel-vue-i18n-generator/license)](https://packagist.org/packages/testmonitor/laravel-vue-i18n-generator)
 
