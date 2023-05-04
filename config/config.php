@@ -3,9 +3,11 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Destination output file
+    | Vue i18n output file
     |--------------------------------------------------------------------------
     |
+    | The file path for the compiled Vue i18n file.
+    |
     */
-    'outputFile' => '/resources/js/i18n/vue-i18n-locales.js',
+    'outputFile' => resource_path('js/i18n/vue-i18n-locales.js'),
 ];
