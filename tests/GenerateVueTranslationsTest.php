@@ -2,6 +2,7 @@
 
 namespace TestMonitor\VueI18nGenerator\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Artisan;
 
 class GenerateVueTranslationsTest extends TestCase
@@ -27,7 +28,7 @@ class GenerateVueTranslationsTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_can_generate_vue_i18n_translations_by_running_the_console_command()
     {
         Artisan::call('vue:translations');
