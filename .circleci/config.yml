@@ -73,8 +73,8 @@ jobs:
             - store_test_results:
                   path: ./logs
             - codecov/upload
-        env:
-            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+                env:
+                    CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 
 workflows:
