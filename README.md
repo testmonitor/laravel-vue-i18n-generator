@@ -3,6 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/testmonitor/laravel-vue-i18n-generator/v/stable)](https://packagist.org/packages/testmonitor/laravel-vue-i18n-generator)
 [![CircleCI](https://img.shields.io/circleci/project/github/testmonitor/laravel-vue-i18n-generator.svg)](https://circleci.com/gh/testmonitor/laravel-vue-i18n-generator)
 [![StyleCI](https://styleci.io/repos/634942834/shield)](https://styleci.io/repos/634942834)
+[![codecov](https://codecov.io/gh/testmonitor/laravel-vue-i18n-generator/graph/badge.svg?token=HUJAH90TU4)](https://codecov.io/gh/testmonitor/laravel-vue-i18n-generator)
 [![License](https://poser.pugx.org/testmonitor/laravel-vue-i18n-generator/license)](https://packagist.org/packages/testmonitor/laravel-vue-i18n-generator)
 
 This package compiles your Laravel translation files into a [Vue i18n](https://kazupon.github.io/vue-i18n/) compatible Javascript file.
