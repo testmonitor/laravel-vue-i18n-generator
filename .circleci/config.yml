@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@4.0.1
+    codecov: codecov/codecov@4.0.1
 
 jobs:
     build:
@@ -61,6 +61,12 @@ jobs:
         steps:
             - attach_workspace:
                   at: .
+            - run:
+                  name: Install PCOV
+                  command: |
+                      sudo apt-get update
+                      sudo apt install php-common
+                      sudo pecl install pcov
             - run:
                   name: Run Unit Tests
                   command: |
