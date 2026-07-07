@@ -2,7 +2,6 @@
 
 namespace TestMonitor\VueI18nGenerator\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
@@ -43,7 +42,7 @@ class GenerateVueTranslations extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         // Determine input and output paths.
         $this->languagePath = $this->option('path') ?
@@ -91,12 +90,16 @@ class GenerateVueTranslations extends Command
     public function getTranslations(array $paths): array
     {
         return Collection::make($paths)
-            ->flatMap(fn ($path) => $this->findTranslationFiles($path))
-            ->groupBy(fn ($paths) => $this->getTranslationLanguage($paths))
+            ->flatMap(fn ($path) => $this->findTranslationFilesRecursively($path))
+            ->groupBy(fn ($path) => $this->getTranslationLanguage($path))
             ->map(function (Collection $files) {
-                return $files->flatMap(fn ($file) => $this->readTranslationFile($file));
+                return $files->flatMap(function ($file) {
+                    $translations = $this->readTranslationFile($file);
+
+                    return [$file => $translations];
+                });
             })
-            ->map(fn ($content) => $this->convertTranslations($content))
+            ->map(fn ($content, $language) => $this->convertTranslationsToNestedArray($content->toArray(), $language))
             ->all();
     }
 
@@ -107,13 +110,61 @@ class GenerateVueTranslations extends Command
      *
      * @return array|false
      */
-    protected function findTranslationFiles(string $path): array|false
+    protected function findTranslationFilesRecursively(string $path): array | false
     {
-        return glob($path . '/{,*/}*.{json,php}', GLOB_BRACE);
+        // Use Symfony's Finder component for more robust recursive file finding
+        $finder = new \Symfony\Component\Finder\Finder();
+        $finder->files()->in($path)->name('*.php')->name('*.json');
+
+        $files = [];
+        foreach ($finder as $file) {
+            $files[] = $file->getRealPath();
+        }
+
+        return collect($files) ? $files : false;
     }
 
     /**
-     * Get the translation key based on the provided filename.
+     * Converts the provided translations into nested arrays.
+     *
+     * @param array $translations
+     *
+     * @param string $language
+     *
+     * @return array
+     */
+    protected function convertTranslationsToNestedArray(array $translations, string $language): array
+    {
+        $nested = [];
+
+        foreach ($translations as $filePath => $content) {
+            // Remove the base path and language directory from the file path
+            $relativePath = str_replace($this->languagePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR, '', $filePath);
+            $pathParts = explode(DIRECTORY_SEPARATOR, $relativePath);
+            $current = &$nested;
+            foreach ($pathParts as $index => $part) {
+                $isFile = $index === count($pathParts) - 1;
+                // If the $part is the file then remove the file extension
+                $part = $isFile ? pathinfo($part, PATHINFO_FILENAME) : $part;
+
+                // If we are at the last part, assign the content directly
+                if ($isFile) {
+                    $current[$part] = $content[$part];
+                } else {
+                    // Create nested structure if it doesn't exist
+                    if (!isset($current[$part])) {
+                        $current[$part] = [];
+                    }
+                    $current = &$current[$part];
+                }
+            }
+        }
+
+        return $nested;
+    }
+
+    /**
+     * Get the translation key based on the provided filename or path to file.
      *
      * @param string $filename
      *
@@ -123,7 +174,7 @@ class GenerateVueTranslations extends Command
     {
         return match (pathinfo($filename, PATHINFO_EXTENSION)) {
             'json' => str_replace('.json', '', basename($filename)),
-            'php' => basename(dirname($filename)),
+            'php' => explode(DIRECTORY_SEPARATOR, trim(str_replace($this->languagePath, '', dirname($filename)), DIRECTORY_SEPARATOR))[0],
         };
     }
 
@@ -140,94 +191,6 @@ class GenerateVueTranslations extends Command
             'json' => json_decode(file_get_contents($filename), true),
             'php' => [basename($filename, '.php') => include($filename)],
         };
-    }
-
-    /**
-     * Convert translations into the Vue-i18n format.
-     *
-     * @param \Illuminate\Support\Collection $lines
-     *
-     * @return array<string,string|array>
-     */
-    protected function convertTranslations(Collection $lines): array
-    {
-        return $lines
-            ->mapWithKeys(fn ($translation, $key) => [
-                $this->convertTranslation($key) => $this->convertTranslation($translation),
-            ])
-            ->all();
-    }
-
-    /**
-     * Converts a single translation line.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    protected function convertTranslation(string|array $content): string|array
-    {
-        // Handle nested translations
-        if (is_array($content)) {
-            return array_combine(
-                array_keys($content),
-                array_map(fn ($value) => $this->convertTranslation($value), $content)
-            );
-        }
-
-        return Str::of($content)
-            ->pipe(fn ($line) => $this->transformPluralization($line))
-            ->pipe(fn ($line) => $this->transformCollonsToBraces($line))
-            ->pipe(fn ($line) => $this->removeEscapeCharacter($line))
-            ->value();
-    }
-
-    /**
-     * Remove escape characters.
-     *
-     * @param string $line
-     *
-     * @return string
-     */
-    protected function removeEscapeCharacter(string $line): string
-    {
-        return preg_replace_callback(
-            '/' . preg_quote('!', '/') . "(:\w+)/",
-            fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
-            $line
-        );
-    }
-
-    /**
-     * Turn Laravel style ":link" into vue-i18n style "{link}".
-     *
-     * @param string $line
-     *
-     * @return string
-     */
-    protected function transformCollonsToBraces(string $line): string
-    {
-        return preg_replace_callback(
-            '/(?<!mailto|tel|' . preg_quote('!', '/') . "):\w+/",
-            fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
-            $line
-        );
-    }
-
-    /**
-     * Convert Laravel into Vue18n pluralization style.
-     *
-     * @param string $line
-     *
-     * @return string
-     */
-    protected function transformPluralization(string $line): string
-    {
-        return preg_replace_callback(
-            "/\{0\}\s(.*)\|\{1\}(.*)\|\[2,\*\](.*)/",
-            fn ($matches) => "{$matches[1]}|{$matches[2]}|{$matches[3]}",
-            $line
-        );
     }
 
     /**
