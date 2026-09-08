@@ -1,0 +1,14 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 6
+
+    paths:
+        - config
+        - src
+
+    configDirectories:
+        - config
+
+    tmpDir: build/phpstan

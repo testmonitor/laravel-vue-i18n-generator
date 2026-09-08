@@ -5,6 +5,7 @@ namespace TestMonitor\VueI18nGenerator\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class GenerateVueTranslations extends Command
 {
@@ -79,6 +80,9 @@ class GenerateVueTranslations extends Command
 
     /**
      * Parse all translation files into a collection.
+     *
+     * @param list<string> $paths
+     * @return array<string, array<string, string|array<mixed>>>
      */
     public function getTranslations(array $paths): array
     {
@@ -92,6 +96,8 @@ class GenerateVueTranslations extends Command
 
     /**
      * Scan the provided path for Laravel JSON and PHP files.
+     *
+     * @return list<string>|false
      */
     protected function findTranslationFiles(string $path): array|false
     {
@@ -106,26 +112,29 @@ class GenerateVueTranslations extends Command
         return match (pathinfo($filename, PATHINFO_EXTENSION)) {
             'json' => str_replace('.json', '', basename($filename)),
             'php' => basename(dirname($filename)),
+            default => throw new InvalidArgumentException("Unsupported translation file \"{$filename}\"."),
         };
     }
 
     /**
      * Read a JSON or PHP file and parse it into an array.
      *
-     * @return array<string,string>
+     * @return array<string, string|array<mixed>>
      */
     protected function readTranslationFile(string $filename): array
     {
         return match (pathinfo($filename, PATHINFO_EXTENSION)) {
             'json' => json_decode(file_get_contents($filename), true),
             'php' => [basename($filename, '.php') => include $filename],
+            default => throw new InvalidArgumentException("Unsupported translation file \"{$filename}\"."),
         };
     }
 
     /**
      * Convert translations into the Vue-i18n format.
      *
-     * @return array<string,string|array>
+     * @param Collection<string, string|array<mixed>> $lines
+     * @return array<string, string|array<mixed>>
      */
     protected function convertTranslations(Collection $lines): array
     {
@@ -139,7 +148,8 @@ class GenerateVueTranslations extends Command
     /**
      * Converts a single translation line.
      *
-     * @param string $content
+     * @param string|array<mixed> $content
+     * @return string|array<mixed>
      */
     protected function convertTranslation(string|array $content): string|array
     {
@@ -164,7 +174,7 @@ class GenerateVueTranslations extends Command
     protected function removeEscapeCharacter(string $line): string
     {
         return preg_replace_callback(
-            '/' . preg_quote('!', '/') . "(:\w+)/",
+            '/\!(:\w+)/',
             fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
             $line
         );
@@ -176,7 +186,7 @@ class GenerateVueTranslations extends Command
     protected function transformCollonsToBraces(string $line): string
     {
         return preg_replace_callback(
-            '/(?<!mailto|tel|' . preg_quote('!', '/') . "):\w+/",
+            '/(?<!mailto|tel|\!):\w+/',
             fn ($matches) => '{' . mb_substr($matches[0], 1) . '}',
             $line
         );
@@ -197,7 +207,7 @@ class GenerateVueTranslations extends Command
     /**
      * Writes translations to a JSON file.
      *
-     * @param array<string,array> $translations
+     * @param array<string, array<string, string|array<mixed>>> $translations
      */
     protected function generateVue18nFile(string $filename, array $translations): int|false
     {
@@ -210,7 +220,7 @@ class GenerateVueTranslations extends Command
     /**
      * Convert translation array to Vue-i18n JSON file.
      *
-     * @param array<string,array> $translations
+     * @param array<string, array<string, string|array<mixed>>> $translations
      */
     protected function convertTranslationsToVue18n(array $translations): string
     {
