@@ -53,9 +53,19 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
+        "analyse": "vendor/bin/phpstan analyse",
+        "style": "vendor/bin/pint --test",
+        "sniff": "vendor/bin/phpcs",
+        "refactor": "vendor/bin/rector process --dry-run",
+        "test": "vendor/bin/phpunit --no-coverage",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "check": [
+            "@style",
+            "@sniff",
+            "@analyse",
+            "@refactor",
+            "@test"
+        ]
     },
     "config": {
         "optimize-autoloader": true,
@@ -68,5 +78,6 @@
                 "TestMonitor\\VueI18nGenerator\\VueI18nGeneratorServiceProvider"
             ]
         }
-    }
+    },
+    "prefer-stable": true
 }
