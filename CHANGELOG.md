@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.0.0] - 2026-09-29
+## [4.0.0] - TBD
 ### Added
 - Support for PHPUnit 13.0
 - Added Larastan
