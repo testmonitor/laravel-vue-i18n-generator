@@ -1,13 +1,34 @@
+# Build artifacts
+build/
+
+# Composer
 /vendor
 composer.lock
 
-.DS_Store
-Thumbs.db
-
-.php_cs.cache
-
-phpunit.xml
+# Tests and related files
+coverage/
+logs/
 .phpunit.cache
 .phpunit.result.cache
 
-/build
+# IDE
+/.idea
+/.vscode
+
+# Code Styling / Linting
+.php_cs.cache
+.php-cs-fixer.cache
+
+# OS
+.DS_Store
+
+# Local documents
+/docs/
+/plans/
+/projects/
+/todos/
+TODO.md
+*.todo
+
+# Agent workspaces
+/.superpowers/
